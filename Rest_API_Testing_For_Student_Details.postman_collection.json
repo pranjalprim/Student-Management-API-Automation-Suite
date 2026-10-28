@@ -1,0 +1,301 @@
+{
+  "info": {
+    "_postman_id": "023fc4bd-0eb4-41dd-989e-edce60d02cf2",
+    "name": "Rest_API_Testing_For_Student_Details",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "31675533"
+  },
+  "item": [
+    {
+      "name": "Get Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\",function(){\r\n    pm.expect(pm.response.to.have.status(200));\r\n});\r\n\r\npm.test(\"Response time is under 4000ms\",function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(4000);\r\n});\r\n\r\npm.test(\"Response size is under 12KB\", function(){\r\n    pm.expect(pm.response.responseSize).to.be.below(12000);\r\n});\r\n \r\n//Check ID\r\nlet id = pm.environment.get(\"id\");  \r\nconsole.log(\"ID: \" + id);  \r\npm.test(\"Check whether ID exists\", function () {\r\n    const response = pm.response.json();\r\n\r\n    const exists = response.some(function (booking) {\r\n        return booking.id === id;\r\n    });\r\n\r\n    pm.expect(\r\n        exists,\r\n        \"ID \" + id + \" was not found\"\r\n    ).to.be.true;\r\n});\r\n\r\n\r\n  "
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/studentsDetails",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "studentsDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var response=pm.response.json();\r\npm.environment.set(\"id\",response.id);\r\npm.environment.set(\"first_name\",response.first_name);\r\npm.environment.set(\"middle_name\",response.middle_name);\r\npm.environment.set(\"last_name\",response.last_name);\r\npm.environment.set(\"date_of_birth\",response.date_of_birth);\r\n\r\npm.test(\"Status code is 201 OK\",function(){\r\n    pm.expect(pm.response.to.have.status(201));\r\n})\r\n\r\npm.test(\"Response time is under 4000ms\",function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(4000);\r\n});\r\n\r\npm.test(\"Response size is under 12KB\", function(){\r\n    pm.expect(pm.response.responseSize).to.be.below(12000);\r\n})\r\n \r\npm.test(\"Verify response type\",function(){\r\n var jsonDate = pm.response.json();\r\n    pm.expect(jsonDate.id).to.be.a(\"number\");\r\n    pm.expect(jsonDate.first_name).to.be.a(\"string\");\r\n    pm.expect(jsonDate.middle_name).to.be.a(\"string\");\r\n    pm.expect(jsonDate.last_name).to.be.a(\"string\");\r\n    pm.expect(jsonDate.date_of_birth).to.be.a(\"string\");\r\n});\r\n\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"first_name\": \"Rasel\",\r\n  \"middle_name\": \"Chowdhury\",\r\n  \"last_name\": \"Manik\",\r\n  \"date_of_birth\": \"2026-10-28\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/studentsDetails",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "studentsDetails"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Specific Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\",function(){\r\n    pm.expect(pm.response.to.have.status(200));\r\n});\r\n\r\npm.test(\"Response time is under 4000ms\",function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(4000);\r\n});\r\n\r\npm.test(\"Response size is under 12KB\", function(){\r\n    pm.expect(pm.response.responseSize).to.be.below(12000);\r\n}); \r\n\r\npm.test(\"Verify updated details\", function () {\r\n    pm.expect(pm.environment.get(\"id\")).to.eql(pm.response.json().data.id);\r\n    pm.expect(pm.environment.get(\"first_name\")).to.eql(pm.response.json().data.first_name);\r\n    pm.expect(pm.environment.get(\"middle_name\")).to.eql(pm.response.json().data.middle_name);\r\n    pm.expect(pm.environment.get(\"last_name\")).to.eql(pm.response.json().data.last_name);\r\n    pm.expect(pm.environment.get(\"date_of_birth\")).to.eql(pm.response.json().data.date_of_birth); \r\n    \r\n});\r\n \r\npm.test(\"Verify Status is True\", function () { \r\n    pm.expect(pm.response.json().status).to.eql(\"true\")\r\n});\r\n\r\n\r\nvar response=pm.response.json();\r\npm.environment.set(\"first_name\",response.data.first_name);  \r\npm.environment.set(\"last_name\",response.data.last_name);\r\npm.environment.set(\"date_of_birth\",response.data.date_of_birth);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/studentsDetails/{{id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "studentsDetails",
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\",function(){\r\n    pm.expect(pm.response.to.have.status(200));\r\n});\r\n\r\npm.test(\"Response time is under 4000ms\",function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(4000);\r\n});\r\n\r\npm.test(\"Response size is under 12KB\", function(){\r\n    pm.expect(pm.response.responseSize).to.be.below(12000);\r\n});\r\n\r\n\r\n \r\npm.test(\"Verify Status is True\", function () { \r\n    pm.expect(pm.response.json().status).to.eql(\"true\")\r\n});\r\n\r\npm.test(\"Check Message\", function () { \r\n    pm.expect(pm.response.json().msg).to.eql(\"update  data success\")\r\n});\r\n "
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"first_name\": \"{{$randomFirstName}}\",\r\n    \"middle_name\": \"{{middle_name}}\",\r\n    \"last_name\": \"{{$randomLastName}}\",\r\n    \"date_of_birth\": \"{{$randomDatePast}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/studentsDetails/{{id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "studentsDetails",
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Specific Student after update",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\",function(){\r\n    pm.expect(pm.response.to.have.status(200));\r\n});\r\n\r\npm.test(\"Response time is under 4000ms\",function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(4000);\r\n});\r\n\r\npm.test(\"Response size is under 12KB\", function(){\r\n    pm.expect(pm.response.responseSize).to.be.below(12000);\r\n});\r\n\r\n \r\npm.test(\"Verify updated details\", function () {\r\n    pm.expect(pm.environment.get(\"id\")).to.eql(pm.response.json().data.id);\r\n    pm.expect(pm.environment.get(\"first_name\")).to.eql(pm.response.json().data.first_name);\r\n    pm.expect(pm.environment.get(\"middle_name\")).to.eql(pm.response.json().data.middle_name);\r\n    pm.expect(pm.environment.get(\"last_name\")).to.eql(pm.response.json().data.last_name);\r\n    pm.expect(pm.environment.get(\"date_of_birth\")).to.eql(pm.response.json().data.date_of_birth); \r\n    \r\n});\r\n \r\npm.test(\"Verify Status is True\", function () { \r\n    pm.expect(pm.response.json().status).to.eql(\"true\")\r\n});\r\n\r\n\r\nvar response=pm.response.json();\r\npm.environment.set(\"first_name\",response.data.first_name);  \r\npm.environment.set(\"last_name\",response.data.last_name);\r\npm.environment.set(\"date_of_birth\",response.data.date_of_birth);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/studentsDetails/{{id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "studentsDetails",
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Technical Skills",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\",function(){\r\n    pm.expect(pm.response.to.have.status(200));\r\n});\r\n\r\npm.test(\"Response time is under 4000ms\",function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(4000);\r\n});\r\n\r\npm.test(\"Response size is under 12KB\", function(){\r\n    pm.expect(pm.response.responseSize).to.be.below(12000);\r\n});\r\n\r\npm.test(\"Verify Status is True\", function () { \r\n    pm.expect(pm.response.json().status).to.eql(\"true\")\r\n});\r\n\r\npm.test(\"Check Message\", function () { \r\n    pm.expect(pm.response.json().msg).to.eql(\"Add  data success\")\r\n});"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "let x = JSON.parse(pm.request.body.raw);\r\n\r\n// pm.environment.set(\"id\", x.id);\r\npm.environment.set(\"language1\", x.language[0]);\r\npm.environment.set(\"language2\", x.language[1]);\r\npm.environment.set(\"language3\", x.language[2]);\r\npm.environment.set(\"yearexp\", x.yearexp);\r\npm.environment.set(\"lastused\", x.lastused);\r\npm.environment.set(\"st_id\", x.st_id);\r\n \r\n// console.log(x);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \r\n    \"id\": \"{{id}}\", \r\n    \"language\": \r\n    [ \r\n        \"Bangali\", \r\n        \"Hindi\", \r\n        \"English\" \r\n    ], \r\n    \"yearexp\": \"3 Years\", \r\n    \"lastused\": \"2026-10-28\", \r\n    \"st_id\": \"202\" \r\n} ",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/technicalskills",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "technicalskills"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Student Address",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\",function(){\r\n    pm.expect(pm.response.to.have.status(200));\r\n});\r\n\r\npm.test(\"Response time is under 4000ms\",function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(4000);\r\n});\r\n\r\npm.test(\"Response size is under 12KB\", function(){\r\n    pm.expect(pm.response.responseSize).to.be.below(12000);\r\n});\r\n\r\npm.test(\"Verify Status is True\", function () { \r\n    pm.expect(pm.response.json().status).to.eql(\"true\")\r\n});\r\n\r\npm.test(\"Check Message\", function () { \r\n    pm.expect(pm.response.json().msg).to.eql(\"Add  data success\")\r\n});"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "let x = JSON.parse(pm.request.body.raw);\r\n\r\n// pm.environment.set(\"id\", x.id);\r\npm.environment.set(\"House_Number\", x.Permanent_Address.House_Number);\r\npm.environment.set(\"City\", x.Permanent_Address.City);\r\npm.environment.set(\"State\",x.Permanent_Address.State);\r\npm.environment.set(\"Country\", x.Permanent_Address.Country);\r\npm.environment.set(\"Std_Code1\", x.Permanent_Address.PhoneNumber[0].Std_Code);\r\npm.environment.set(\"Home1\", x.Permanent_Address.PhoneNumber[0].Home);\r\npm.environment.set(\"Mobile1\",x.Permanent_Address.PhoneNumber[0].Mobile);\r\npm.environment.set(\"Std_Code2\", x.Permanent_Address.PhoneNumber[1].Std_Code);\r\npm.environment.set(\"Home2\", x.Permanent_Address.PhoneNumber[1].Home);\r\npm.environment.set(\"Mobile2\", x.Permanent_Address.PhoneNumber[1].Mobile);\r\npm.environment.set(\"stId\", x.stId); \r\n \r\nconsole.log(x);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \r\n    \"Permanent_Address\": { \r\n        \"House_Number\": \"388\",\r\n        \"City\": \"DHAKA\",\r\n        \"State\": \"DHAKA\", \r\n        \"Country\": \"BANGLADESH\",\r\n        \"PhoneNumber\": [ \r\n            { \r\n            \"Std_Code\": \"+88\",\r\n            \"Home\": \"01745685201\",\r\n            \"Mobile\": \"01745685201\" \r\n            },\r\n            { \r\n            \"Std_Code\": \"+88\",\r\n            \"Home\": \"01745685201\", \r\n            \"Mobile\": \"01745685201\" \r\n            } \r\n        ] \r\n    },\r\n    \"stId\": \"201\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/addresses/{{id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "addresses",
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "FINAL STUDENT DETAILS",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\",function(){\r\n    pm.expect(pm.response.to.have.status(200));\r\n});\r\n\r\npm.test(\"Response time is under 4000ms\",function(){\r\n    pm.expect(pm.response.responseTime).to.be.below(4000);\r\n});\r\n\r\npm.test(\"Response size is under 12KB\", function(){\r\n    pm.expect(pm.response.responseSize).to.be.below(12000);\r\n});\r\n \r\npm.test(\"Verify updated student details\", function () { \r\n    pm.expect(pm.environment.get(\"first_name\")).to.eql(pm.response.json().data.first_name);\r\n    pm.expect(pm.environment.get(\"middle_name\")).to.eql(pm.response.json().data.middle_name);\r\n    pm.expect(pm.environment.get(\"last_name\")).to.eql(pm.response.json().data.last_name);\r\n    pm.expect(pm.environment.get(\"date_of_birth\")).to.eql(pm.response.json().data.date_of_birth); \r\n    \r\n});\r\n \r\npm.test(\"Verify Status is True\", function () { \r\n    pm.expect(pm.response.json().status).to.eql(\"true\")\r\n});\r\n\r\nlet x=pm.response.json();\r\npm.test(\"Verify TechnicalDetails Have Value\", function () {\r\n    pm.expect(x.data.TechnicalDetails.length).to.be.greaterThan(0);\r\n});\r\n\r\npm.test(\"Verify Address Have Value\", function () {\r\n    pm.expect(x.data.Address.length).to.be.greaterThan(0);\r\n});\r\n\r\npm.test(\"Verify response type\",function(){\r\n var x = pm.response.json();\r\n    pm.expect(x.status).to.be.a(\"string\"); \r\n    pm.expect(x.data.first_name).to.be.a(\"string\");\r\n    pm.expect(x.data.middle_name).to.be.a(\"string\");\r\n    pm.expect(x.data.last_name).to.be.a(\"string\");\r\n    pm.expect(x.data.date_of_birth).to.be.a(\"string\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/FinalStudentDetails/{{id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "FinalStudentDetails",
+            "{{id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,57 +1,91 @@
-# 🎓 Student Management REST API Automation Suite
+# 🎓 Student Details REST API Automation Suite
 
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
-![Newman](https://img.shields.io/badge/Newman-28A745?style=for-the-badge&logo=npm&logoColor=white)
-![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-
-An end-to-end automated API testing framework built using **Postman** and **Newman** to validate the core functionalities and RESTful endpoints of the **Student Details Management System**.
-
-This suite verifies end-to-end CRUD operations, data integrity across linked relational entities (skills and addresses), dynamic payload handling via environment variables, and execution via command-line interface (CLI).
+Automated end-to-end API testing suite built with **Postman** and executed via **Newman CLI** for the [TheTestingWorld Student Details API](https://thetestingworldapi.com/). This project validates full CRUD operations, nested relational endpoints (Technical Skills & Addresses), response schemas, data types, and execution performance.
 
 ---
 
-## 📌 Features & Test Highlights
-
-* **Complete CRUD Validation:** Automated testing for `GET`, `POST`, `PUT`, and `DELETE` requests for student profiles.
-* **Dynamic API Chaining:** Automatic extraction and passing of runtime dynamic variables (e.g., dynamic `student_id` extracted from POST creation to subsequent requests).
-* **Nested Entity Association:** Sequential test coverage for related entities including technical skills (`/api/technicalskills`) and addresses (`/api/addresses/{id}`).
-* **Comprehensive Assertions:**
-  * HTTP status code checks (`200 OK`, `201 Created`).
-  * Response time thresholds and payload size checks.
-  * JSON Schema and key-value pair validation.
-  * Dynamic environment state synchronization.
-* **CLI Execution & Reporting:** Integrates **Newman** for running headless collections and generating structured execution summaries.
+## 📋 Table of Contents
+- [Tech Stack & Tools](#-tech-stack--tools)
+- [API Endpoints Tested](#-api-endpoints-tested)
+- [Latest Test Execution Summary](#-latest-test-execution-summary)
+- [Known Issues & Defect Log](#-known-issues--defect-log)
+- [Project Structure](#-project-structure)
+- [How to Run Locally](#-how-to-run-locally)
 
 ---
 
-## 🧪 Test Execution & Workflow Summary
-
-| Execution Order | Request Name | Method | Endpoint / Resource | Objective / Assertion Summary |
-| :---: | :--- | :---: | :--- | :--- |
-| **1** | Get Student List | `GET` | `/api/studentsDetails` | Fetch list of all students & validate response size/time. |
-| **2** | Create Student | `POST` | `/api/studentsDetails` | Create a new student profile and extract `id` dynamically. |
-| **3** | Get Specific Student | `GET` | `/api/studentsDetails/{id}` | Validate fetched student against created attributes. |
-| **4** | Update Student | `PUT` | `/api/studentsDetails/{id}` | Update existing record parameters (e.g., name, course). |
-| **5** | Verify Student Update | `GET` | `/api/studentsDetails/{id}` | Assert updated attributes in response payload. |
-| **6** | Create Technical Skills | `POST` | `/api/technicalskills` | Bind skill sets to the student ID. |
-| **7** | Create Student Address | `POST` | `/api/addresses/{id}` | Associate current/permanent address with student ID. |
-| **8** | Final Student Details | `GET` | `/api/FinalStudentDetails/{id}` | Validate final aggregated JSON structure and array payloads. |
+## 🛠️ Tech Stack & Tools
+- **API Client & Scripting:** Postman (JavaScript / Chai Assertions)
+- **CLI Test Runner:** Newman `v6.2.2`
+- **HTML Reporting:** `newman-reporter-html` & `newman-reporter-htmlextra`
+- **Environment Management:** Postman Environment Variables (`Student_Details_Environment`)
 
 ---
 
-## 🛠️ Tech Stack & Prerequisites
+## 🔗 API Endpoints Tested
 
-* **Postman** (Desktop Client or Web)
-* **Node.js** (v14.x or higher)
-* **Newman CLI** (`npm install -g newman`)
-* **Newman HTML Reporter** (`npm install -g newman-reporter-htmlextra`)
+**Base URL:** `https://thetestingworldapi.com`
+
+| # | Request Name | Method | Endpoint | Purpose | Status |
+| :--- | :--- | :---: | :--- | :--- | :---: |
+| 1 | **Get Student** | `GET` | `/api/studentsDetails` | Retrieve all student records | ⚠️ Partial (4/9 Passed) |
+| 2 | **Create Student** | `POST` | `/api/studentsDetails` | Create a new student profile | ✅ Passed (18/18) |
+| 3 | **Get Specific Student** | `GET` | `/api/studentsDetails/{{id}}` | Fetch newly created student by ID | ⚠️ Partial (9/10 Passed) |
+| 4 | **Update Student** | `PUT` | `/api/studentsDetails/{{id}}` | Modify existing student details | ⚠️ Partial (5/6 Passed) |
+| 5 | **Get Specific Student after update** | `GET` | `/api/studentsDetails/{{id}}` | Verify updated student details | ⚠️ Partial (9/10 Passed) |
+| 6 | **Create Technical Skills** | `POST` | `/api/technicalskills` | Add technical skills for the student | ✅ Passed (6/6) |
+| 7 | **Create Student Address** | `POST` | `/api/addresses/{{id}}` | Add permanent/present address | ✅ Passed (6/6) |
+| 8 | **FINAL STUDENT DETAILS** | `GET` | `/api/FinalStudentDetails/{{id}}` | Validate complete aggregated profile | ✅ Passed (11/11) |
+| 9 | **Delete Student** | `GET` | `/{{id}}` | Remove student record | ❌ Failed (404 HTML) |
 
 ---
 
-## 🚀 How to Run locally
+## 📊 Latest Test Execution Summary
 
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/pranjalprim/Student-Management-API-Automation-Suite.git](https://github.com/pranjalprim/Student-Management-API-Automation-Suite.git)
-cd Student-Management-API-Automation-Suite
+* **Execution Date:** November 16, 2026 (20:56 GMT+0600)
+* **Collection:** `Rest_API_Testing_For_Student_Details`
+* **Environment:** `Student_Details_Environment`
+
+| Metric | Total | Passed | Failed |
+| :--- | :---: | :---: | :---: |
+| **Iterations** | 1 | 1 | 0 |
+| **Requests** | 9 | 9 | 0 |
+| **Pre-request Scripts** | 4 | 4 | 0 |
+| **Test Scripts** | 9 | 8 | 1 |
+| **Assertions** | 76 | 68 | 8 |
+| **Skipped Tests** | 0 | - | - |
+
+* **Total Run Duration:** `4.9s` – `5.2s`
+* **Average Response Time:** `403ms` – `438ms`
+* **Total Data Received:** `15.61 KB`
+* **Overall Assertion Pass Rate:** `89.47%` (68/76 Assertions Passed)
+
+---
+
+## 🐞 Known Issues & Defect Log
+
+During the automated test run, **9 failures** (8 assertion failures + 1 script error) were identified and documented:
+
+1. **Get Student (`GET /api/studentsDetails`):**
+   - *Payload Size Exceeded:* Response size reached `12.48 KB` (`12,782 bytes`), exceeding the `12 KB` threshold assertion.
+   - *Script ReferenceError:* `responsebody is not defined` caused 4 schema/array validation assertions to fail due to variable casing in the test script.
+2. **Get Specific Student / After Update (`GET /api/studentsDetails/{{id}}`):**
+   - *Alternate Environment Key Mismatch:* Expected `undefined` to deeply equal `'Mr.'` / `'Miss'` / `'Ms.'`.
+3. **Update Student (`PUT /api/studentsDetails/{{id}}`):**
+   - *API Response Typo:* API returned `'update  data success'` (double space) instead of `'update data success'`.
+4. **Delete Student (`GET /10895233`):**
+   - *Endpoint / Method Misconfiguration:* Request sent as `GET` to `/{{id}}` instead of `DELETE /api/studentsDetails/{{id}}`, returning a `404 Not Found` HTML page (`JSONError: Unexpected token '<' at 1:1`).
+
+---
+
+## 📁 Project Structure
+
+```text
+├── collections/
+│   └── Rest_API_Testing_For_Student_Details.postman_collection.json
+├── environments/
+│   └── Student_Details_Environment.postman_environment.json
+├── reports/
+│   ├── newman-run-report.html
+│   └── Rest_API_Testing_For_Student_Details-summary.html
+└── README.md
